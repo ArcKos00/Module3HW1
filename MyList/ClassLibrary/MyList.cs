@@ -3,13 +3,14 @@
 namespace ClassLibrary
 {
     public class MyList<T> : IEnumerable
+        where T : IComparable<T>
     {
         private T[] _array;
         private int _index = 0;
 
         public MyList()
         {
-            _array = new T[0];
+            _array = new T[2];
         }
 
         public MyList(int count)
@@ -42,49 +43,89 @@ namespace ClassLibrary
         // Добавить в конец коллекуции элемент
         public void Add(T value)
         {
-            if (_array[_index] == null && _index < _array.Length)
+            if (_array.Length == 0 || _index == _array.Length)
+            {
+                ResizeAdd(ref _array);
+                Add(value);
+                return;
+            }
+
+            if (new MyComparer<T>().Compare(_array[_index], default(T)) == 0)
             {
                 _array[_index] = value;
                 _index++;
-            }
-            else
-            {
-                Resize(ref _array, 5);
-                Add(value);
             }
         }
 
         // добавить в конец колекции коллекцию или массив
         public void AddRange(T[] value)
         {
-
+            for (int i = 0; i < value.Length; i++)
+            {
+                Add(value[i]);
+            }
         }
 
         // Удалить из колекции данный элемент и сдвинуть коллекцию в случае успешного удаления вернуть труе
         public bool Remove(T value)
         {
-            return true;
+            bool isHappened = false;
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (new MyComparer<T>().Compare(_array[i], value) == 0)
+                {
+                    ResizeRemove(ref _array, i);
+                    isHappened = true;
+                    _index--;
+                }
+            }
+
+            return isHappened;
         }
 
         // удалить из коллекции элемент по индексу и сдвинуть коллекцию
         public void RemoveAt(int index)
         {
-
+            ResizeRemove(ref _array, index);
+            _index--;
         }
 
         // отсортировать коллекцию
         public void Sort()
         {
-            Array.Sort();
+            Array.Sort(_array, new MyComparer<T>());
         }
 
-        private void Resize(ref T[] arr, int diff = 1)
+        private void ResizeAdd(ref T[] arr, int diff = 1)
         {
             T[] newArr = new T[arr.Length + diff];
             for (int i = 0; i < arr.Length; i++)
             {
                 newArr[i] = arr[i];
             }
+
+            arr = newArr;
+        }
+
+        private void ResizeRemove(ref T[] arr, int index)
+        {
+            T[] newArr = new T[arr.Length - 1];
+
+            if (index <= 0 && index > arr.Length)
+            {
+                return;
+            }
+
+            for (int i = 0; i < index; i++)
+            {
+                newArr[i] = arr[i];
+            }
+
+            for (int i = index; i < newArr.Length; i++)
+            {
+                newArr[i] = arr[i + 1];
+            }
+
             arr = newArr;
         }
     }
