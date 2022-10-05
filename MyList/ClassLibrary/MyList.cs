@@ -2,7 +2,7 @@
 
 namespace ClassLibrary
 {
-    public class MyList<T> : IEnumerable
+    public class MyList<T>
         where T : IComparable<T>
     {
         private T[] _array;
@@ -35,7 +35,7 @@ namespace ClassLibrary
         }
 
         // пересчет элементов коллекции
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new Enumerator<T>(_array);
         }
@@ -70,7 +70,7 @@ namespace ClassLibrary
         public bool Remove(T value)
         {
             bool isHappened = false;
-            for (int i = 0; i < _array.Length; i++)
+            for (int i = _array.Length - 1; i >= 0; i--)
             {
                 if (new MyComparer<T>().Compare(_array[i], value) == 0)
                 {

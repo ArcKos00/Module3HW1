@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class Enumerator<T> : IEnumerator
+    public class Enumerator<T> : IEnumerator<T>
     {
         private T[] _arr;
         private int _position = -1;

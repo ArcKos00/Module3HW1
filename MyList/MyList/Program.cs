@@ -6,18 +6,19 @@ l.Add(1);
 l.Add(2);
 l.Add(3);
 l.Add(1);
-l.Add(2);
-l.Add(3);
-l.Add(1);
-l.Add(2);
-l.Add(3);
-l.Add(1);
 l.AddRange(arr);
 l.Add(4);
-l.Remove(4);
 l.Add(1);
+l.RemoveAt(0);
+l.Add(2);
+l.Add(2);
+l.Sort();
+l.Add(2);
+l.Add(2);
 
-foreach (int i in l)
+l.Remove(2);
+
+foreach (var i in l)
 {
     Console.WriteLine(i);
 }
