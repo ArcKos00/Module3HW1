@@ -12,7 +12,7 @@ namespace ClassLibrary
     {
         public int Compare(T? x, T? y)
         {
-            if (x != null)
+            if (x != null && y != null)
             {
                 return x.CompareTo(y);
             }
