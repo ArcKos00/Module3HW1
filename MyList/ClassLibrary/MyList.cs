@@ -2,16 +2,15 @@
 
 namespace ClassLibrary
 {
-    public class MyList<T> : IEnumerable<T>
+    public class MyList<T>
         where T : IComparable<T>
     {
-        private const int _startedSize = 0;
-        private int _index = 0;
         private T[] _array;
+        private int _index = 0;
 
         public MyList()
         {
-            _array = new T[_startedSize];
+            _array = new T[2];
         }
 
         public MyList(int count)
@@ -35,6 +34,13 @@ namespace ClassLibrary
             get { return _array; }
         }
 
+        // пересчет элементов коллекции
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new Enumerator<T>(_array);
+        }
+
+        // Добавить в конец коллекуции элемент
         public void Add(T value)
         {
             if (_array.Length == 0 || _index == _array.Length)
@@ -51,6 +57,7 @@ namespace ClassLibrary
             }
         }
 
+        // добавить в конец колекции коллекцию или массив
         public void AddRange(T[] value)
         {
             for (int i = 0; i < value.Length; i++)
@@ -59,11 +66,7 @@ namespace ClassLibrary
             }
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return ((IEnumerable<T>)_array).GetEnumerator();
-        }
-
+        // Удалить из колекции данный элемент и сдвинуть коллекцию в случае успешного удаления вернуть труе
         public bool Remove(T value)
         {
             bool isHappened = false;
@@ -80,20 +83,17 @@ namespace ClassLibrary
             return isHappened;
         }
 
+        // удалить из коллекции элемент по индексу и сдвинуть коллекцию
         public void RemoveAt(int index)
         {
             ResizeRemove(ref _array, index);
             _index--;
         }
 
+        // отсортировать коллекцию
         public void Sort()
         {
             Array.Sort(_array, new MyComparer<T>());
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _array.GetEnumerator();
         }
 
         private void ResizeAdd(ref T[] arr, int diff = 1)

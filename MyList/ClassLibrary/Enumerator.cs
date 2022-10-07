@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class Enumeratorssss<T> : IEnumerator<T>
+    public class Enumerator<T> : IEnumerator<T>
     {
-        private T[] _array;
+        private T[] _arr;
         private int _position = -1;
-        public Enumeratorssss(T[] values)
+        public Enumerator(T[] values)
         {
-            _array = values;
+            _arr = values;
         }
 
         public T Current
         {
             get
             {
-                if (_position == -1 || _position >= _array.Length)
+                if (_position == -1 || _position >= _arr.Length)
                 {
                     throw new InvalidOperationException();
                 }
                 else
                 {
-                    return _array[_position];
+                    return _arr[_position];
                 }
             }
         }
@@ -35,7 +35,7 @@ namespace ClassLibrary
 
         public bool MoveNext()
         {
-            if (_position < _array.Length - 1)
+            if (_position < _arr.Length - 1)
             {
                 _position++;
                 return true;
